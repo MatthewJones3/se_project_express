@@ -1,4 +1,4 @@
-/*module.exports = {
+/* module.exports = {
   env: {
     es2021: true,
     node: true,
@@ -20,7 +20,7 @@
     sourceType: "module",
   },
   rules: { camelcase: ["error", { allow: ["_id"] }] },
-};*/
+}; */
 
 module.exports = {
   env: {

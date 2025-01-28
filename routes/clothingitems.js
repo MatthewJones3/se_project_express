@@ -1,4 +1,4 @@
-/*const express = require("express");
+/* const express = require("express");
 const router = express.Router();
 const {
   getItems,
@@ -14,9 +14,10 @@ router.delete("/clothingitems/:itemId", deleteItem);
 router.put("/clothingitems/:itemId/likes", likeItem);
 router.delete("/clothingitems/:itemId/likes", dislikeItem);
 
-module.exports = router;*/
+module.exports = router; */
 
 const express = require("express");
+
 const router = express.Router();
 const {
   getItems,
