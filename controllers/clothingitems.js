@@ -7,7 +7,7 @@ const {
 
 const getItems = async (req, res) => {
   try {
-    const items = await ClothingItem.find().populate("owner", "name avatar");
+    const items = await ClothingItem.find();
     return res.status(200).json(items);
   } catch (error) {
     return res
@@ -17,17 +17,17 @@ const getItems = async (req, res) => {
 };
 
 const createItem = async (req, res) => {
+  const { name, weather, imageUrl } = req.body;
   try {
-    const { name, weather, imageUrl } = req.body;
-    const owner = req.user._id;
-
-    const item = new ClothingItem({ name, weather, imageUrl, owner });
+    const item = new ClothingItem({
+      name,
+      weather,
+      imageUrl,
+      owner: req.user._id,
+    });
     await item.save();
     return res.status(201).json(item);
   } catch (error) {
-    if (error.name === "ValidationError") {
-      return res.status(BAD_REQUEST).json({ message: error.message });
-    }
     return res
       .status(INTERNAL_SERVER_ERROR)
       .json({ message: "An error has occurred on the server." });
@@ -41,6 +41,13 @@ const deleteItem = async (req, res) => {
       error.statusCode = NOT_FOUND;
       throw error;
     });
+
+    if (item.owner.toString() !== req.user._id) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to delete this item" });
+    }
+
     await item.remove();
     return res.status(200).json({ message: "Item deleted" });
   } catch (error) {
@@ -57,24 +64,20 @@ const deleteItem = async (req, res) => {
 };
 
 const likeItem = async (req, res) => {
+  const { itemId } = req.params;
   try {
-    const item = await ClothingItem.findByIdAndUpdate(
-      req.params.itemId,
-      { $addToSet: { likes: req.user._id } },
-      { new: true }
-    ).orFail(() => {
-      const error = new Error("Item not found");
-      error.statusCode = NOT_FOUND;
-      throw error;
-    });
+    const item = await ClothingItem.findById(itemId);
+    if (!item) {
+      return res.status(NOT_FOUND).json({ message: "Item not found" });
+    }
+
+    if (!item.likes.includes(req.user._id)) {
+      item.likes.push(req.user._id);
+      await item.save();
+    }
+
     return res.status(200).json(item);
   } catch (error) {
-    if (error.name === "CastError") {
-      return res.status(BAD_REQUEST).json({ message: "Invalid ID format" });
-    }
-    if (error.statusCode === NOT_FOUND) {
-      return res.status(NOT_FOUND).json({ message: error.message });
-    }
     return res
       .status(INTERNAL_SERVER_ERROR)
       .json({ message: "An error has occurred on the server." });
@@ -82,24 +85,20 @@ const likeItem = async (req, res) => {
 };
 
 const dislikeItem = async (req, res) => {
+  const { itemId } = req.params;
   try {
-    const item = await ClothingItem.findByIdAndUpdate(
-      req.params.itemId,
-      { $pull: { likes: req.user._id } },
-      { new: true }
-    ).orFail(() => {
-      const error = new Error("Item not found");
-      error.statusCode = NOT_FOUND;
-      throw error;
-    });
+    const item = await ClothingItem.findById(itemId);
+    if (!item) {
+      return res.status(NOT_FOUND).json({ message: "Item not found" });
+    }
+
+    item.likes = item.likes.filter(
+      (userId) => userId.toString() !== req.user._id.toString()
+    );
+    await item.save();
+
     return res.status(200).json(item);
   } catch (error) {
-    if (error.name === "CastError") {
-      return res.status(BAD_REQUEST).json({ message: "Invalid ID format" });
-    }
-    if (error.statusCode === NOT_FOUND) {
-      return res.status(NOT_FOUND).json({ message: error.message });
-    }
     return res
       .status(INTERNAL_SERVER_ERROR)
       .json({ message: "An error has occurred on the server." });
