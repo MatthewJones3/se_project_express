@@ -1,23 +1,52 @@
-const jwt = require("jsonwebtoken");
+/* const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
-const { UNAUTHORIZED } = require("../utils/errors");
+const User = require("../models/user");
 
-const auth = (req, res, next) => {
-  const { authorization } = req.headers;
-
-  if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res.status(UNAUTHORIZED).json({ message: "Authorization required" });
-  }
-
-  const token = authorization.replace("Bearer ", "");
-
+const auth = async (req, res, next) => {
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    req.user = payload;
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      return res.status(401).json({ message: "Please authenticate." });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
     return next();
   } catch (error) {
-    return res.status(UNAUTHORIZED).json({ message: "Authorization failed" });
+    return res.status(401).json({ message: "Authentication failed." });
+  }
+};
+
+module.exports = auth; */
+
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
+const User = require("../models/user");
+
+const auth = async (req, res, next) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) {
+      return res.status(401).json({ message: "Please authenticate." });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    req.user = user;
+    return next();
+  } catch (error) {
+    return res.status(401).json({ message: "Authentication failed." });
   }
 };
 
 module.exports = auth;
+

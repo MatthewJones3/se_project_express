@@ -1,9 +1,19 @@
 const express = require("express");
 
 const router = express.Router();
-const { getCurrentUser, updateUser } = require("../controllers/users");
+const {
+  loginUser,
+  createUser,
+  getCurrentUser,
+  updateUser,
+} = require("../controllers/users");
+const auth = require("../middleware/auth");
 
-router.get("/users/me", getCurrentUser);
-router.patch("/users/me", updateUser);
+router.post("/login", loginUser);
+router.post("/register", createUser);
+router.get("/me", auth, getCurrentUser);
+router.patch("/me", auth, updateUser);
 
 module.exports = router;
+
+/// / I really have no idea if this is correct. I apologize if I have changed too much
