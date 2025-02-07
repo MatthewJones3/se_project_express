@@ -7,7 +7,7 @@ const {
   getCurrentUser,
   updateUser,
 } = require("../controllers/users");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/auth.js"); // Explicitly add the .js extension
 
 router.post("/login", loginUser);
 router.post("/register", createUser);

@@ -71,20 +71,11 @@ module.exports = {
     node: true,
   },
   extends: ["eslint:recommended", "airbnb-base", "prettier"],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: [".eslintrc.{js,cjs}"],
-      parserOptions: {
-        sourceType: "script",
-      },
-    },
-  ],
+  parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    requireConfigFile: false,
   },
   rules: {
     "no-underscore-dangle": ["error", { allow: ["_id"] }],
@@ -95,7 +86,6 @@ module.exports = {
         js: "never",
       },
     ],
-    "import/no-unresolved": "error",
   },
 };
 
