@@ -40,7 +40,7 @@ const createUser = async (req, res) => {
     const user = new User({ name, avatar, email, password: hashedPassword });
     await user.save();
     const { password: _, ...userData } = user.toObject();
-    return res.status(201).json(userData); // Returning user data without the password
+    return res.status(201).json(userData); 
   } catch (error) {
     if (error.code === 11000) {
       return res.status(CONFLICT).json({ message: "Email is already in use" });
@@ -58,7 +58,7 @@ const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     const { password, ...userData } = user.toObject();
-    return res.status(200).json(userData); // Returning user data without password
+    return res.status(200).json(userData);
   } catch (error) {
     return res
       .status(INTERNAL_SERVER_ERROR)
@@ -75,7 +75,7 @@ const updateUser = async (req, res) => {
       { new: true, runValidators: true }
     );
     const { password, ...userData } = user.toObject();
-    return res.status(200).json(userData); // Returning updated user data without password
+    return res.status(200).json(userData);
   } catch (error) {
     if (error.name === "CastError") {
       return res.status(BAD_REQUEST).json({ message: "Invalid ID format" });
