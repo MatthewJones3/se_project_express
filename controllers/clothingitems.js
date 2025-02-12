@@ -3,6 +3,7 @@ const {
   BAD_REQUEST,
   NOT_FOUND,
   INTERNAL_SERVER_ERROR,
+  FORBIDDEN
 } = require("../utils/errors");
 
 const getItems = async (req, res) => {
@@ -47,7 +48,7 @@ const deleteItem = async (req, res) => {
 
     if (item.owner.toString() !== req.user._id.toString()) {
       return res
-        .status(403)
+        .status(FORBIDDEN)
         .json({ message: "You are not authorized to delete this item" });
     }
     await item.remove();
