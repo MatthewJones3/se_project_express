@@ -2,17 +2,17 @@ const express = require("express");
 
 const router = express.Router();
 const {
-  loginUser,
-  createUser,
+  /* loginUser,
+  createUser, */
   getCurrentUser,
   updateUser,
 } = require("../controllers/users");
-const auth = require("../middleware/auth.js"); // Explicitly add the .js extension
+const auth = require("../middlewares/auth"); // I have "const auth = require("../middlewares/auth");" here so I must find out why its not updating
 
-router.post("/login", loginUser);
-router.post("/register", createUser);
-router.get("/me", auth, getCurrentUser);
-router.patch("/me", auth, updateUser);
+/* router.post("/login", loginUser);
+router.post("/register", createUser); */
+router.get("/users/me", auth, getCurrentUser);
+router.patch("/users/me", auth, updateUser);
 
 module.exports = router;
 
