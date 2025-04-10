@@ -31,7 +31,7 @@ app.use((req, res) => {
 const { PORT = 3001 } = process.env;
 app.listen(PORT);*/
 
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -42,7 +42,6 @@ const { NOT_FOUND } = require("./utils/errors");
 const errorHandler = require("./middlewares/errorhandler");
 const { validateAuth, validateUserBody } = require("./middleware/validation");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-
 
 const app = express();
 
@@ -57,6 +56,12 @@ mongoose
   .catch(() => {});
 
 app.use(requestLogger);
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
 
 app.post("/signin", loginUser);
 app.post("/signup", createUser);
