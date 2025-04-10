@@ -1,19 +1,22 @@
-const express = require("express");
+/*const express = require("express");
 
 const router = express.Router();
-const {
-  /* loginUser,
-  createUser, */
-  getCurrentUser,
-  updateUser,
-} = require("../controllers/users");
-const auth = require("../middlewares/auth"); // I have "const auth = require("../middlewares/auth");" here so I must find out why its not updating
+const { getCurrentUser, updateUser } = require("../controllers/users");
+const auth = require("../middlewares/auth");
 
-/* router.post("/login", loginUser);
-router.post("/register", createUser); */
 router.get("/users/me", auth, getCurrentUser);
 router.patch("/users/me", auth, updateUser);
 
-module.exports = router;
+module.exports = router;*/
 
-/// / I really have no idea if this is correct. I apologize if I have changed too much
+const express = require("express");
+const { validateUserBody } = require("../middleware/validation");
+
+const router = express.Router();
+const { getCurrentUser, updateUser } = require("../controllers/users");
+const auth = require("../middlewares/auth");
+
+router.get("/users/me", auth, getCurrentUser);
+router.patch("/users/me", auth, validateUserBody, updateUser);
+
+module.exports = router;

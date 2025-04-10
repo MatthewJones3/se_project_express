@@ -35,5 +35,6 @@ module.exports = {
         js: "never",
       },
     ],
+    "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
   },
 };
