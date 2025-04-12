@@ -1,4 +1,4 @@
-const {
+/*const {
   BadRequestError,
   UnauthorizedError,
   ForbiddenError,
@@ -26,6 +26,19 @@ const errorHandler = (err, req, res, next) => {
   }
 
   return res.status(500).send({ message: "An error occurred on the server" });
+};
+
+module.exports = errorHandler;*/
+
+//// I got extra help with this one, so I am not sure if I have it right.
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err.stack);
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "An error occurred on the server";
+
+  return res.status(statusCode).send({ message });
 };
 
 module.exports = errorHandler;
