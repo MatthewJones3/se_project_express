@@ -1,4 +1,4 @@
-/*const ClothingItem = require("../models/clothingitem");
+/* const ClothingItem = require("../models/clothingitem");
 const {
   BAD_REQUEST,
   NOT_FOUND,
@@ -110,7 +110,7 @@ const dislikeItem = async (req, res) => {
   }
 };
 
-module.exports = { getItems, createItem, deleteItem, likeItem, dislikeItem };*/
+module.exports = { getItems, createItem, deleteItem, likeItem, dislikeItem }; */
 
 const ClothingItem = require("../models/clothingitem");
 const {

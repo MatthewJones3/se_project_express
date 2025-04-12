@@ -1,4 +1,4 @@
-/*const express = require("express");
+/* const express = require("express");
 const auth = require("../middlewares/auth");
 
 const router = express.Router();
@@ -16,11 +16,11 @@ router.delete("/items/:itemId", auth, deleteItem);
 router.put("/items/:itemId/likes", auth, likeItem);
 router.delete("/items/:itemId/likes", auth, dislikeItem);
 
-module.exports = router;*/
+module.exports = router; */
 
 const express = require("express");
 const auth = require("../middlewares/auth");
-const { validateCardBody, validateId } = require("../middleware/validation");
+const { validateCardBody, validateId } = require("../middlewares/validation");
 
 const router = express.Router();
 const {

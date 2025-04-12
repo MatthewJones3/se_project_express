@@ -1,4 +1,4 @@
-/*const jwt = require("jsonwebtoken");
+/* const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const {
@@ -89,7 +89,10 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, createUser, getCurrentUser, updateUser };*/
+module.exports = { loginUser, createUser, getCurrentUser, updateUser }; */
+
+// I will speak with a tutor further. I dont know why
+// the commented out lines make it work
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -126,7 +129,7 @@ const createUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ name, avatar, email, password: hashedPassword });
     await user.save();
-    const { password: _, ...userData } = user.toObject();
+    const { ...userData } = user.toObject();
     return res.status(201).json(userData);
   } catch (error) {
     if (error.code === 11000) {
@@ -145,6 +148,7 @@ const getCurrentUser = async (req, res, next) => {
     if (!user) {
       throw new NotFoundError("User not found");
     }
+    // eslint-disable-next-line no-unused-vars
     const { password, ...userData } = user.toObject();
     return res.status(200).json(userData);
   } catch (error) {
@@ -163,6 +167,7 @@ const updateUser = async (req, res, next) => {
     if (!user) {
       throw new NotFoundError("User not found");
     }
+    // eslint-disable-next-line no-unused-vars
     const { password, ...userData } = user.toObject();
     return res.status(200).json(userData);
   } catch (error) {

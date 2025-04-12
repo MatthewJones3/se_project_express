@@ -1,4 +1,4 @@
-/*require("dotenv").config();
+/* require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -47,8 +47,9 @@ app.use(errors());
 app.use(errorHandler);
 
 const { PORT = 3001 } = process.env;
-app.listen(PORT);*/
+app.listen(PORT); */
 
+/// /////
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -66,13 +67,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/wtwr_db";
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db", {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .catch((error) => {
-    console.error("MongoDB connection failed:", error);
+    errorLogger.error(`MongoDB connection failed: ${error.message}`, { error });
   });
 
 app.use(requestLogger);

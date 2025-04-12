@@ -1,6 +1,6 @@
-/*const JWT_SECRET = ". ";
+/* const JWT_SECRET = ". ";
 
-module.exports = { JWT_SECRET };*/
+module.exports = { JWT_SECRET }; */
 
 const { JWT_SECRET = "super-strong-secret" } = process.env;
 

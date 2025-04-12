@@ -1,4 +1,4 @@
-/*const jwt = require("jsonwebtoken");
+/* const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/user");
 const { UNAUTHORIZED } = require("../utils/errors");
@@ -21,10 +21,10 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;*/
+module.exports = auth; */
 
-///// Sorry for keeping commented out code up top.
-///// A method I have grown accoustomed to before knowing I have things correct.
+/// // Sorry for keeping commented out code up top.
+/// // A method I have grown accoustomed to before knowing I have things correct.
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
 const User = require("../models/user");
@@ -44,7 +44,7 @@ const auth = async (req, res, next) => {
     req.user = user;
     return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
