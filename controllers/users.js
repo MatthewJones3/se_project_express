@@ -34,7 +34,8 @@ const createUser = async (req, res, next) => {
     const user = new User({ name, avatar, email, password: hashedPassword });
     await user.save();
     // eslint-disable-next-line no-unused-vars
-    const { password, ...userData } = user.toObject();
+    const { ...userData } = user.toObject();
+    delete userData.password;
     return res.status(201).json(userData);
   } catch (error) {
     if (error.code === 11000) {
